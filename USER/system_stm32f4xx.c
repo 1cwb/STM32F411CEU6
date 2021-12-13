@@ -195,9 +195,9 @@
   *-----------------------------------------------------------------------------
   *        APB2 Prescaler                         | 1
   *-----------------------------------------------------------------------------
-  *        HSI Frequency(Hz)                      | 16000000
+  *        HSI Frequency(Hz)                      | 25000000
   *-----------------------------------------------------------------------------
-  *        PLL_M                                  | 16
+  *        PLL_M                                  | 25
   *-----------------------------------------------------------------------------
   *        PLL_N                                  | 400
   *-----------------------------------------------------------------------------
@@ -318,7 +318,7 @@
 #if defined (USE_HSE_BYPASS)
 #define PLL_M      8    
 #else /* STM32F411xE */   
-#define PLL_M      16
+#define PLL_M      25
 #endif /* USE_HSE_BYPASS */
 #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx */  
 
@@ -431,10 +431,10 @@ void SystemInit(void)
   RCC->CR &= (uint32_t)0xFEF6FFFF;
 
   /* Reset PLLCFGR register */
-  RCC->PLLCFGR = 0x24003010;
+  RCC->PLLCFGR = 0x24003010; //系统时钟256分频 AHB 2分频给APB1 AHB 不分频给APB2
 
   /* Reset HSEBYP bit */
-  RCC->CR &= (uint32_t)0xFFFBFFFF;
+  RCC->CR &= (uint32_t)0xFFFBFFFF; //bit 18 = 0
 
   /* Disable all interrupts */
   RCC->CIR = 0x00000000;
@@ -743,9 +743,10 @@ static void SetSysClock(void)
   RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
   
   /* PCLK1 = HCLK / 4*/
-  RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+  RCC->CFGR |= RCC_CFGR_PPRE1_DIV2; //AHB2分频
   
   /* Configure the main PLL */
+  //PLL_M == 16  PLL_N == 400 PLL_P(4 >> 1) << 16 == 01(4分频) PLL_Q = 7
   RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (PLL_Q << 24); 
   
   /* Enable the main PLL */
