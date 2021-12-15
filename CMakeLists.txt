@@ -47,7 +47,7 @@ set(VERSION_PATCH 0 CACHE STRING "Project patch version number.")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/CORE)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/FWLIB/inc)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SYSTEM)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/HADWARE)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/HARDWARE)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${STM32_PROJ_FOLDER})
 
 if(USE_SYSTEM_VIEW)
