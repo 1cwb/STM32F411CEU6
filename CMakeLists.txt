@@ -66,13 +66,15 @@ add_subdirectory(${STM32_CMAKE_DIR}/FWLIB ${CMAKE_BINARY_DIR}/libraries/FWLIB)
 add_subdirectory(${STM32_CMAKE_DIR}/SYSTEM ${CMAKE_BINARY_DIR}/libraries/SYSTEM)
 add_subdirectory(${STM32_CMAKE_DIR}/HARDWARE ${CMAKE_BINARY_DIR}/libraries/HARDWARE)
 
-# STM32CubeMX generated source files
+# STM32 USER generated source files
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/USER USER_SRC_FILE)
+file(GLOB ASM_FILE ${CMAKE_CURRENT_SOURCE_DIR}/USER/*.s)
+
 set(CUBEMX_SRC
-    ${STM32_PROJ_FOLDER}/startup_stm32f411xe.s
-    ${STM32_PROJ_FOLDER}/system_stm32f4xx.c
-    ${STM32_PROJ_FOLDER}/stm32f4xx_it.c
-    ${STM32_PROJ_FOLDER}/main.c
+    ${ASM_FILE}
+    ${USER_SRC_FILE}
 )
+
 add_executable(${ELF_TARGET} ${CUBEMX_SRC})
 target_compile_definitions(${ELF_TARGET} PUBLIC -D${MCU_FAMILY})
 target_link_libraries(${ELF_TARGET} PUBLIC stm32f4xx_lib syslib hwlib -lc -lm -lnosys)
