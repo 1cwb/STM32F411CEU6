@@ -3,7 +3,6 @@
 #include "bsp_usart.h"
 #include "led.h"
 #include "key.h"
-
 #include "stm32f4xx.h"
   
 void Delay(__IO uint32_t nCount);
@@ -15,20 +14,19 @@ void Delay(__IO uint32_t nCount)
 
 int main(void)
 {
+
   USART1_Config(115200);
-  LED_init();
   KEY_Init();
+  LED_init();
   RCC_ClocksTypeDef rcc;
   RCC_GetClocksFreq(&rcc);
+  delay_init(rcc.HCLK_Frequency/1000000);
   while(1){
-    if(IS_KEY1_ON())
-    {
-        printf("sys clock is %lu\n",rcc.SYSCLK_Frequency);
-        LED1_ON();
-    }
-    Delay(0x7FFFFF);
+    printf("sys clock is %lu\n",rcc.SYSCLK_Frequency);
+		LED1_ON();
+		delay_ms(1000);
 		LED1_OFF();
-		
+		delay_ms(1000);
 	}
 }
 

@@ -139,9 +139,10 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+ #include <stdio.h>
 void SysTick_Handler(void)
 {
- 
+    printf("-------time on\n");
 }
 
 /******************************************************************************/
